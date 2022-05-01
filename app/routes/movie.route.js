@@ -8,22 +8,22 @@ const movie = require("../controllers/movie.controller.js");
 var auth = require("../middleware/auth.middleware");
 
 // list all movies
-router.get("/", auth.simple(), movie.list);
+router.get("/", auth.employee(), movie.list);
 
 // find movie
-router.get("/find", auth.simple(), movie.find);
+router.get("/find", auth.employee(), movie.find);
 
 // info on movie
-router.get("/:id", auth.simple(), movie.info);
+router.get("/:id", auth.employee(), movie.info);
 
 // create a movie
-router.post("/", auth.simple(), movie.create);
+router.post("/", auth.employee(), movie.create);
 
 // update movie
-router.put("/:id", auth.simple(), movie.edit);
+router.put("/:id", auth.employee(), movie.edit);
 
 // delete movie
-router.delete("/:id", auth.simple(), movie.delete);
+router.delete("/:id", auth.employee(), movie.delete);
 
 // export the router
 module.exports = router;

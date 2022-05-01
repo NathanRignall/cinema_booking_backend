@@ -11,10 +11,10 @@ const auth = require("../middleware/auth.middleware");
 // register user
 router.post("/register", session.register);
 
-// login users
+// login user
 router.post("/", session.login);
 
-// session user info
+// get user info
 router.get("/", auth.simple(), session.info); // view
 
 // logged in user update

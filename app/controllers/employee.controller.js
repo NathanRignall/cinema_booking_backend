@@ -5,9 +5,9 @@ const validator = require("validator");
 
 // load the db
 const db = require("../models");
-const User = db.users;
+const Employee = db.employees;
 
-// register user on system
+// register an employee on system (TEMPOARY)
 exports.register = function (req, res, next) {
   // get the info from json
   const json = req.body;
@@ -78,8 +78,8 @@ exports.register = function (req, res, next) {
   // create uuid
   const id = crypto.randomUUID();
 
-  // create user object
-  const user = {
+  // create employee object
+  const employee = {
     id: id,
     email: email,
     firstName: firstName,
@@ -87,23 +87,23 @@ exports.register = function (req, res, next) {
     hash: hash,
   };
 
-  // Create user in the database
-  User.create(user)
+  // Create employee in the database
+  Employee.create(employee)
     .then((data) => {
       // destroy the exisitng session to avoid confusion
       req.session.destroy();
-
-      // login the user by storing data to session
-      req.session.user = {
+      
+      // login the employee by storing data to session
+      req.session.employee = {
         id: data.id,
         email: data.email,
         firstName: firstName,
-        lastName: lastName
+        lastName: lastName,
       };
 
       // retun the correct vars
       res.status(200).json({
-        payload: req.session.user,
+        payload: req.session.employee,
         message: "okay",
         reqid: res.locals.reqid,
       });
@@ -111,9 +111,9 @@ exports.register = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "session.controller.register.1",
+        location: "employee.controller.register.1",
         code: error.code,
-        message: error.message || "Some error occurred while creating the user",
+        message: error.message || "Some error occurred while creating the employee",
         from: "sequelize",
       });
 
@@ -153,13 +153,13 @@ exports.login = function (req, res, next) {
     });
   }
 
-  User.findOne({
+  Employee.findOne({
     where: {
       email: email,
     },
   })
     .then((data) => {
-      // check if the user exists
+      // check if the employee exists
       if (data != null) {
         // store the hash to var
         const hash = data.hash;
@@ -169,17 +169,17 @@ exports.login = function (req, res, next) {
           // destroy the exisitng session to avoid confusion
           req.session.destroy();
 
-          // login the user by storing data to session
-          req.session.user = {
+          // login the employee by storing data to session
+          req.session.employee = {
             id: data.id,
             email: data.email,
             firstName: data.firstName,
-            lastName: data.lastName
+            lastName: data.lastName,
           };
 
           // retun the correct vars
           res.status(200).json({
-            payload: req.session.user,
+            payload: req.session.employee,
             message: "okay",
             reqid: res.locals.reqid,
           });
@@ -193,7 +193,7 @@ exports.login = function (req, res, next) {
       } else {
         // retun the correct vars
         res.status(401).json({
-          message: "User does not exist",
+          message: "Employee does not exist",
           reqid: res.locals.reqid,
         });
       }
@@ -201,9 +201,9 @@ exports.login = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "session.controller.login.1",
+        location: "employee.controller.login.1",
         code: error.code,
-        message: error.message || "Some error occurred while finding the user",
+        message: error.message || "Some error occurred while finding the employee",
         from: "sequelize",
       });
 
@@ -216,20 +216,20 @@ exports.login = function (req, res, next) {
     });
 };
 
-// get info on current logged in user
+// get info on current logged in employee
 exports.info = function (req, res, next) {
   // return the correct vars
   res.status(200).json({
-    payload: req.session.user,
+    payload: req.session.employee,
     message: "okay",
     reqid: res.locals.reqid,
   });
 };
 
-// update logged in user info
+// update logged in employee info
 exports.update = function (req, res, next) {
-  // get the user id from session
-  const id = req.session.user.id;
+  // get the employee id from session
+  const id = req.session.employee.id;
 
   // get the info from json
   const json = req.body;
@@ -275,15 +275,15 @@ exports.update = function (req, res, next) {
     });
   }
 
-  // create user update
-  const user = {
+  // create employee update
+  const employee = {
     email: email,
     firstName: firstName,
     lastName: lastName
   };
 
-  // update the user in the database
-  User.update(user, {
+  // update the employee in the database
+  Employee.update(employee, {
     where: {
       id: id,
     },
@@ -291,23 +291,23 @@ exports.update = function (req, res, next) {
     .then((number) => {
       // check if update worked
       if (number == 1) {
-        // update the user info
-        req.session.user.email = email;
-        req.session.user.firstName = firstName;
-        req.session.user.lastName = lastName;
+        // update the employee info
+        req.session.employee.email = email;
+        req.session.employee.firstName = firstName;
+        req.session.employee.lastName = lastName;
 
         // retun the correct vars
         res.status(200).json({
-          payload: req.session.user,
+          payload: req.session.employee,
           message: "okay",
           reqid: res.locals.reqid,
         });
       } else {
         // push the error to buffer
         res.locals.errors.push({
-          location: "session.controller.update.1",
+          location: "employee.controller.update.1",
           code: "no-update",
-          message: "User not found during update",
+          message: "Employee not updated",
           from: "manual",
         });
 
@@ -322,9 +322,9 @@ exports.update = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "session.controller.update.2",
+        location: "employee.controller.update.2",
         code: error.code,
-        message: error.message || "Some error occurred while updating the user",
+        message: error.message || "Some error occurred while updating the employee",
         from: "sequelize",
       });
 
@@ -337,10 +337,10 @@ exports.update = function (req, res, next) {
     });
 };
 
-// reset user password
+// reset employee password
 exports.password = function (req, res, next) {
-  // get the user id from session
-  const userid = req.session.user.id;
+  // get the employee id from session
+  const id = req.session.employee.id;
 
   // get the info from json
   const json = req.body;
@@ -376,13 +376,13 @@ exports.password = function (req, res, next) {
     });
   }
 
-  User.findOne({
+  Employee.findOne({
     where: {
-      id: userid,
+      id: id,
     },
   })
     .then((data) => {
-      // check if the user exists
+      // check if the employee exists
       if (data != null) {
         // store the hash to var
         const hash = data.hash;
@@ -392,15 +392,15 @@ exports.password = function (req, res, next) {
           // hash the new password
           const newHash = bcrypt.hashSync(newPassword, 10);
 
-          // create user password update
-          const user = {
+          // create employee password update
+          const employee = {
             hash: newHash,
           };
 
-          // update the user password in the database
-          User.update(user, {
+          // update the employee password in the database
+          Employee.update(employee, {
             where: {
-              id: userid,
+              id: id,
             },
           })
             .then((number) => {
@@ -414,9 +414,9 @@ exports.password = function (req, res, next) {
               } else {
                 // push the error to buffer
                 res.locals.errors.push({
-                  location: "session.controller.password.1",
+                  location: "employee.controller.password.1",
                   code: "no-update",
-                  message: "User not found during update",
+                  message: "Employee not found during update",
                   from: "manual",
                 });
 
@@ -431,11 +431,11 @@ exports.password = function (req, res, next) {
             .catch((error) => {
               // push the error to buffer
               res.locals.errors.push({
-                location: "session.controller.password.2",
+                location: "employee.controller.password.2",
                 code: error.code,
                 message:
                   error.message ||
-                  "Some error occurred while updating the user",
+                  "Some error occurred while updating the employee",
                 from: "sequelize",
               });
 
@@ -456,7 +456,7 @@ exports.password = function (req, res, next) {
       } else {
         // retun the correct vars
         res.status(401).json({
-          message: "User does not exist",
+          message: "Employee does not exist",
           reqid: res.locals.reqid,
         });
       }
@@ -464,9 +464,9 @@ exports.password = function (req, res, next) {
     .catch((err) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "session.controller.password.3",
+        location: "employee.controller.password.3",
         code: error.code,
-        message: err.message || "Some error occurred while finding the user",
+        message: err.message || "Some error occurred while finding the employee",
         from: "sequelize",
       });
 

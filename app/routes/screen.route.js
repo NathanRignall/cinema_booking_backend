@@ -8,19 +8,19 @@ const screen = require("../controllers/screen.controller.js");
 var auth = require("../middleware/auth.middleware");
 
 // list all screens
-router.get("/", auth.simple(), screen.list);
+router.get("/", auth.employee(), screen.list);
 
 // info on screen
-router.get("/:id", auth.simple(), screen.info);
+router.get("/:id", auth.employee(), screen.info);
 
 // create a screen
-router.post("/", auth.simple(), screen.create);
+router.post("/", auth.employee(), screen.create);
 
 // update screen
-router.put("/:id", auth.simple(), screen.edit);
+router.put("/:id", auth.employee(), screen.edit);
 
 // delete screen
-router.delete("/:id", auth.simple(), screen.delete);
+router.delete("/:id", auth.employee(), screen.delete);
 
 // export the router
 module.exports = router;

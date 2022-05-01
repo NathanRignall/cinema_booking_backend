@@ -8,19 +8,19 @@ const reservation = require("../controllers/reservation.controller.js");
 var auth = require("../middleware/auth.middleware");
 
 // list all reservations
-router.get("/", auth.simple(), reservation.list);
+router.get("/", auth.employee(), reservation.list);
 
 // info on reservation
-router.get("/:id", auth.simple(), reservation.info);
+router.get("/:id", auth.employee(), reservation.info);
 
 // create a reservation
-router.post("/", auth.simple(), reservation.create);
+router.post("/", auth.employee(), reservation.create);
 
 // update reservation
-router.put("/:id", auth.simple(), reservation.edit);
+router.put("/:id", auth.employee(), reservation.edit);
 
 // delete reservation
-router.delete("/:id", auth.simple(), reservation.delete);
+router.delete("/:id", auth.employee(), reservation.delete);
 
 // export the router
 module.exports = router;
