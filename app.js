@@ -17,6 +17,7 @@ const app = express();
 
 // import the routes
 const sessionRouter = require("./app/routes/session.route");
+const employeeRouter = require("./app/routes/employee.route");
 const movieRouter = require("./app/routes/movie.route");
 const screenRouter = require("./app/routes/screen.route");
 const screeningRouter = require("./app/routes/screening.route");
@@ -60,6 +61,7 @@ app.use(
 
 // use the routes
 app.use("/session", sessionRouter);
+app.use("/employee", employeeRouter);
 app.use("/admin/movie", movieRouter);
 app.use("/admin/screen", screenRouter);
 app.use("/admin/screening", screeningRouter);

@@ -90,8 +90,9 @@ exports.register = function (req, res, next) {
   // Create user in the database
   User.create(user)
     .then((data) => {
-      // destroy the exisitng session to avoid confusion
-      req.session.destroy();
+      // delete the exisitng sessions to avoid confusion
+      delete req.session.user;
+      delete req.session.employee;
 
       // login the user by storing data to session
       req.session.user = {
@@ -166,8 +167,9 @@ exports.login = function (req, res, next) {
 
         // check the password matches hash
         if (bcrypt.compareSync(password, hash)) {
-          // destroy the exisitng session to avoid confusion
-          req.session.destroy();
+          // delete the exisitng sessions to avoid confusion
+          delete req.session.user;
+          delete req.session.employee;
 
           // login the user by storing data to session
           req.session.user = {

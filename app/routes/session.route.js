@@ -15,16 +15,16 @@ router.post("/register", session.register);
 router.post("/", session.login);
 
 // get user info
-router.get("/", auth.simple(), session.info); // view
+router.get("/", auth.user(), session.info); // view
 
 // logged in user update
-router.put("/", auth.simple(), session.update); // view
+router.put("/", auth.user(), session.update); // view
 
 // reset password of current user
-router.put("/password", auth.simple(), session.password);
+router.put("/password", auth.user(), session.password);
 
 // logout sesison
-router.put("/logout", auth.simple(), session.logout);
+router.put("/logout", auth.user(), session.logout);
 
 // export the router
 module.exports = router;
