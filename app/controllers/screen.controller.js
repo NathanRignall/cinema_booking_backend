@@ -94,7 +94,6 @@ exports.create = function (req, res, next) {
 
   // set the vars from post
   const name = json.name;
-  const totalSeats = json.totalSeats;
   const rows = json.rows;
   const columns = json.columns;
 
@@ -103,24 +102,6 @@ exports.create = function (req, res, next) {
     // retun the correct vars
     return res.status(400).json({
       message: "Name input value missing",
-      reqid: res.locals.reqid,
-    });
-  }
-
-  // check if totalSeats is present
-  if (!totalSeats) {
-    // retun the correct vars
-    return res.status(400).json({
-      message: "Total seats input value missing",
-      reqid: res.locals.reqid,
-    });
-  }
-
-  // check if columns is present
-  if (!columns) {
-    // retun the correct vars
-    return res.status(400).json({
-      message: "Columns input value missing",
       reqid: res.locals.reqid,
     });
   }
@@ -134,11 +115,11 @@ exports.create = function (req, res, next) {
     });
   }
 
-  // check total is correct
-  if (rows * columns != totalSeats) {
+  // check if columns is present
+  if (!columns) {
     // retun the correct vars
     return res.status(400).json({
-      message: "Column/Rows/Total does not match",
+      message: "Columns input value missing",
       reqid: res.locals.reqid,
     });
   }
@@ -150,7 +131,7 @@ exports.create = function (req, res, next) {
   const screen = {
     id: id,
     name: name,
-    totalSeats: totalSeats,
+    totalSeats: columns*rows,
   };
 
   // bulk create seat array
@@ -176,7 +157,6 @@ exports.create = function (req, res, next) {
   // Create screen in the database
   Screen.create(screen)
     .then((data) => {
-
       // temp create some seats
       Seat.bulkCreate(seats)
         .then((wait) => {
