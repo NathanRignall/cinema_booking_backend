@@ -8,7 +8,7 @@ const Reservation = db.reservations;
 
 // get all reservations from the database.
 exports.list = (req, res) => {
-  Reservation.findAll()
+  Reservation.findAll( {include: ["screening", db.seats] })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({

@@ -8,7 +8,7 @@ const Screening = db.screenings;
 
 // get all screenings from the database.
 exports.list = (req, res) => {
-  Screening.findAll()
+  Screening.findAll( {include: ["screen", "movie"]} )
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
