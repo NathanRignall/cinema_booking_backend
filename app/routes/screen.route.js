@@ -10,6 +10,9 @@ var auth = require("../middleware/auth.middleware");
 // list all screens
 router.get("/", auth.employee(), screen.list);
 
+// find screen
+router.get("/find", auth.employee(), screen.find);
+
 // info on screen
 router.get("/:id", auth.employee(), screen.info);
 

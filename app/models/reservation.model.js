@@ -4,10 +4,6 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       type: Sequelize.UUID,
     },
-    paid: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false,
-    },
   });
 
   return Reservation;

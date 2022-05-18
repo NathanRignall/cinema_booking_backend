@@ -1,6 +1,5 @@
 // load the dependancies
 const crypto = require("crypto");
-const { stringify } = require("querystring");
 const validator = require("validator");
 const db = require("../models");
 
@@ -10,7 +9,7 @@ const Seat = db.seats;
 
 function intToChar(int) {
   const code = "A".charCodeAt(0);
-  console.log(code); // 👉️ 65
+  console.log(code);
 
   return String.fromCharCode(code + int - 1);
 }
@@ -30,6 +29,46 @@ exports.list = (req, res) => {
       // push the error to buffer
       res.locals.errors.push({
         location: "screen.controller.list.1",
+        code: error.code,
+        message:
+          error.message || "Some error occurred while finding the screens",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};
+
+// search screen from the database.
+exports.find = (req, res) => {
+  // set req parms
+  const find = req.query.find;
+
+  // find the screen in db
+  Screen.findAll({
+    where: {
+      name: {
+        [db.Sequelize.Op.like]: `%${find}%`,
+      },
+    },
+  })
+    .then((data) => {
+      // retun the correct vars
+      res.status(200).json({
+        payload: data,
+        message: "okay",
+        reqid: res.locals.reqid,
+      });
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "screen.controller.find.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screens",
@@ -150,6 +189,7 @@ exports.create = function (req, res, next) {
           column_count_string.padStart(3, "0"),
         avaliable: true,
         screenId: id,
+        name: intToChar(row_count) + "-" + column_count_string.padStart(3, "0"),
       });
     }
   }
