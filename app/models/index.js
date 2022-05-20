@@ -28,12 +28,17 @@ db.purchases = require("./purchase.model.js")(sequelize, Sequelize);
 db.reservations = require("./reservation.model.js")(sequelize, Sequelize);
 db.screens = require("./screen.model.js")(sequelize, Sequelize);
 db.seats = require("./seat.model.js")(sequelize, Sequelize);
+db.types = require("./type.model.js")(sequelize, Sequelize);
 db.movies = require("./movie.model.js")(sequelize, Sequelize);
 db.screenings = require("./screening.model.js")(sequelize, Sequelize);
 
 // create the realtionship between purchases and reservations (one to many)
 db.purchases.hasMany(db.reservations, { as: "reservations" });
 db.reservations.belongsTo(db.purchases, { foreignKey: "purchaseId", as: "purchase" });
+
+// create the realtionship between types and seets (one to many)
+db.types.hasMany(db.seats, { as: "seats" });
+db.seats.belongsTo(db.types, { foreignKey: "typeId", as: "type" });
 
 // create the realtionship between screens and seets (one to many)
 db.screens.hasMany(db.seats, { as: "seats" });

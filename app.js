@@ -22,6 +22,8 @@ const movieRouter = require("./app/routes/movie.route");
 const screenRouter = require("./app/routes/screen.route");
 const screeningRouter = require("./app/routes/screening.route");
 const purchaseRouter = require("./app/routes/purchase.route");
+const typeRouter = require("./app/routes/type.route");
+const seatRouter = require("./app/routes/seat.route");
 
 // setup cors middleware
 const corsOptions = {
@@ -47,17 +49,17 @@ app.use(cookieParser());
 
 // setup the session
 app.use(
-    session({
-      name: "session",
-      secret: "test",
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        httpOnly: true,
-        path: "/",
-      },
-    })
-  );
+  session({
+    name: "session",
+    secret: "test",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      path: "/",
+    },
+  })
+);
 
 // use the routes
 app.use("/session", sessionRouter);
@@ -66,5 +68,7 @@ app.use("/admin/movie", movieRouter);
 app.use("/admin/screen", screenRouter);
 app.use("/admin/screening", screeningRouter);
 app.use("/admin/purchase", purchaseRouter);
+app.use("/admin/type", typeRouter);
+app.use("/admin/seat", seatRouter);
 
 module.exports = app;

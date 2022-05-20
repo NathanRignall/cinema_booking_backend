@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Screen = sequelize.define("screen", {
+    const Type = sequelize.define("type", {
       id: {
         primaryKey: true,
         type: Sequelize.UUID,
@@ -7,11 +7,8 @@ module.exports = (sequelize, Sequelize) => {
       name: {
         type: Sequelize.STRING,
         allowNull: false
-      },
-      columns: {
-        type: Sequelize.INTEGER(2),
       }
     });
   
-    return Screen;
+    return Type;
   };

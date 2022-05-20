@@ -6,13 +6,7 @@ const db = require("../models");
 // load the db
 const Screen = db.screens;
 const Seat = db.seats;
-
-function intToChar(int) {
-  const code = "A".charCodeAt(0);
-  console.log(code);
-
-  return String.fromCharCode(code + int - 1);
-}
+const Type = db.types;
 
 // get all screens from the database.
 exports.list = (req, res) => {
@@ -90,7 +84,22 @@ exports.info = (req, res) => {
   const id = req.params.id;
 
   // Find the specific screen in db
-  Screen.findByPk(id, { include: ["seats"] })
+  Screen.findByPk(id, {
+    include: [
+      {
+        model: Seat,
+        as: "seats",
+        attributes:['id', 'name', 'x', 'y'],
+        include: [
+          {
+            model: Type,
+            as: "type",
+            attributes:['name']
+          },
+        ],
+      },
+    ],
+  })
     .then((data) => {
       if (data) {
         // retun the correct vars
@@ -133,7 +142,6 @@ exports.create = function (req, res, next) {
 
   // set the vars from post
   const name = json.name;
-  const rows = json.rows;
   const columns = json.columns;
 
   // check if name is present
@@ -141,15 +149,6 @@ exports.create = function (req, res, next) {
     // retun the correct vars
     return res.status(400).json({
       message: "Name input value missing",
-      reqid: res.locals.reqid,
-    });
-  }
-
-  // check if rows is present
-  if (!rows) {
-    // retun the correct vars
-    return res.status(400).json({
-      message: "Rows input value missing",
       reqid: res.locals.reqid,
     });
   }
@@ -170,65 +169,23 @@ exports.create = function (req, res, next) {
   const screen = {
     id: id,
     name: name,
-    totalSeats: columns*rows,
+    columns: columns,
   };
-
-  // bulk create seat array
-  const seats = [];
-
-  // loop through rows and columns to make seats
-  for (let row_count = 1; row_count <= rows; row_count++) {
-    for (let column_count = 1; column_count <= columns; column_count++) {
-      let column_count_string = column_count.toString();
-      seats.push({
-        id:
-          id +
-          "-" +
-          intToChar(row_count) +
-          "-" +
-          column_count_string.padStart(3, "0"),
-        avaliable: true,
-        screenId: id,
-        name: intToChar(row_count) + "-" + column_count_string.padStart(3, "0"),
-      });
-    }
-  }
 
   // Create screen in the database
   Screen.create(screen)
     .then((data) => {
-      // temp create some seats
-      Seat.bulkCreate(seats)
-        .then((wait) => {
-          // retun the correct vars
-          return res.status(200).json({
-            payload: data,
-            message: "okay",
-            reqid: res.locals.reqid,
-          });
-        })
-        .catch((error) => {
-          // push the error to buffer
-          res.locals.errors.push({
-            location: "screen.controller.create.1",
-            code: error.code,
-            message:
-              error.message || "Some error occurred while creating the seats.",
-            from: "sequelize",
-          });
-
-          // return the correct vars
-          return res.status(500).json({
-            message: "Server error",
-            errors: res.locals.errors,
-            reqid: res.locals.reqid,
-          });
-        });
+      // retun the correct vars
+      res.status(200).json({
+        payload: data,
+        message: "okay",
+        reqid: res.locals.reqid,
+      });
     })
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screen.controller.create.2",
+        location: "screen.controller.create.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the screen.",
@@ -236,7 +193,7 @@ exports.create = function (req, res, next) {
       });
 
       // return the correct vars
-      return res.status(500).json({
+      res.status(500).json({
         message: "Server error",
         errors: res.locals.errors,
         reqid: res.locals.reqid,
@@ -254,7 +211,7 @@ exports.edit = (req, res) => {
 
   // set the vars from post
   const name = json.name;
-  const totalSeats = json.totalSeats;
+  const columns = json.columns;
 
   // check if name is present
   if (!name) {
@@ -265,11 +222,11 @@ exports.edit = (req, res) => {
     });
   }
 
-  // check if totalSeats is present
-  if (!totalSeats) {
+  // check if columns is present
+  if (!columns) {
     // retun the correct vars
     return res.status(400).json({
-      message: "Total seats input value missing",
+      message: "Columns input value missing",
       reqid: res.locals.reqid,
     });
   }
@@ -277,7 +234,7 @@ exports.edit = (req, res) => {
   // create screen object
   const screen = {
     name: name,
-    totalSeats: totalSeats,
+    columns: columns,
   };
 
   // update the specific screen in the db
