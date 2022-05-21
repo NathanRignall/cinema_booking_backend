@@ -7,7 +7,11 @@ module.exports = (sequelize, Sequelize) => {
       name: {
         type: Sequelize.STRING,
         allowNull: false
-      }
+      },
+      color: {
+        type: Sequelize.STRING(7),
+        allowNull: false,
+      },
     });
   
     return Type;

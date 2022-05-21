@@ -94,7 +94,7 @@ exports.info = (req, res) => {
           {
             model: Type,
             as: "type",
-            attributes:['name']
+            attributes: ["name", "color"],
           },
         ],
       },

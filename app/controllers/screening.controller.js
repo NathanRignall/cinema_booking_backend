@@ -5,10 +5,13 @@ const db = require("../models");
 
 // load the db
 const Screening = db.screenings;
+const Screen = db.screens;
+const Seat = db.seats;
+const Type = db.types;
 
 // get all screenings from the database.
 exports.list = (req, res) => {
-  Screening.findAll( {include: ["screen", "movie"]} )
+  Screening.findAll({ include: ["screen", "movie"] })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
@@ -42,12 +45,54 @@ exports.info = (req, res) => {
   const id = req.params.id;
 
   // Find the specific screening in db
-  Screening.findByPk(id, { include: ["screen", "movie"] })
+  Screening.findByPk(id, {
+    include: [
+      {
+        model: Screen,
+        as: "screen",
+        include: [
+          {
+            model: Seat,
+            as: "seats",
+            attributes: ["id", "name", "x", "y"],
+            include: [
+              {
+                model: Type,
+                as: "type",
+                attributes: ["name", "color"],
+              },
+            ],
+          },
+        ],
+      },
+      "movie",
+      db.seats,
+    ],
+  })
     .then((data) => {
       if (data) {
+
+        let responseData = data.toJSON();
+
+        responseData.screen.seats.map((item, key, list) => {
+          let id = item.id;
+
+          // check if seat is occupied
+          let found = responseData.seats.find((seat) => seat.id === id);
+
+          if (found) {
+            responseData.screen.seats[key].occupied = true;
+          } else {
+            responseData.screen.seats[key].occupied = false;
+          }
+
+         })
+
+
+
         // retun the correct vars
         res.status(200).json({
-          payload: data,
+          payload: responseData,
           message: "okay",
           reqid: res.locals.reqid,
         });
@@ -181,7 +226,7 @@ exports.edit = (req, res) => {
   // create screening object
   const screening = {
     time: time,
-    price: price
+    price: price,
   };
 
   // Update the specific screening in the db

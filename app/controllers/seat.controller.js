@@ -13,6 +13,48 @@ function intToChar(int) {
   return String.fromCharCode(code + int - 1);
 }
 
+// delete seat from the database.
+exports.delete = (req, res) => {
+  // get req params
+  const id = req.params.id;
+
+  // Delete the specific seat in db
+  Seat.destroy({
+    where: { id: id },
+  })
+    .then((number) => {
+      if (number == 1) {
+        // retun the correct vars
+        res.status(200).json({
+          message: "okay",
+          reqid: res.locals.reqid,
+        });
+      } else {
+        // retun the correct vars
+        res.status(400).json({
+          message: "SeatId invalid",
+          reqid: res.locals.reqid,
+        });
+      }
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "seat.controller.delete.1",
+        code: error.code,
+        message: error.message || "Some error occurred while deleting the seat",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};
+
 // bulk create seats in the database.
 exports.bulkCreate = function (req, res, next) {
   // get the info from json
@@ -93,7 +135,7 @@ exports.bulkCreate = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "seat.controller.create.1",
+        location: "seat.controller.bulkCreate.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the seats.",
@@ -130,13 +172,11 @@ exports.bulkEdit = (req, res) => {
   }
 
   seats.forEach((seat, index) => {
-
     let name = intToChar(seat.y + 1) + "-" + (seat.x + 1).toString();
     seats[index].name = name;
 
     console.log(name);
-
-  })
+  });
 
   console.log(seats);
 
@@ -153,7 +193,7 @@ exports.bulkEdit = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "seat.controller.edit.1",
+        location: "seat.controller.bulkEdit.1",
         code: error.code,
         message:
           error.message || "Some error occurred while 'updating' the seats.",

@@ -7,6 +7,9 @@ const seat = require("../controllers/seat.controller.js");
 // middleware
 var auth = require("../middleware/auth.middleware");
 
+// delete seat
+router.delete("/:id", auth.employee(), seat.delete);
+
 // bulk create seats
 router.post("/bulk", auth.employee(), seat.bulkCreate);
 

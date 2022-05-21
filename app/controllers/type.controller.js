@@ -42,12 +42,22 @@ exports.create = function (req, res, next) {
   
     // set the vars from post
     const name = json.name;
+    const color = json.color;
   
-    // check if title is present
+    // check if name is present
     if (!name) {
       // retun the correct vars
       return res.status(400).json({
         message: "Name input value missing",
+        reqid: res.locals.reqid,
+      });
+    }
+
+    // check if color is present
+    if (!color) {
+      // retun the correct vars
+      return res.status(400).json({
+        message: "Color input value missing",
         reqid: res.locals.reqid,
       });
     }
@@ -59,6 +69,7 @@ exports.create = function (req, res, next) {
     const type = {
       id: id,
       name: name,
+      color: color,
     };
   
     // Create type in the database
