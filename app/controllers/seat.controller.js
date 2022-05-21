@@ -8,7 +8,6 @@ const Seat = db.seats;
 
 function intToChar(int) {
   const code = "A".charCodeAt(0);
-  console.log(code);
 
   return String.fromCharCode(code + int - 1);
 }
@@ -171,14 +170,11 @@ exports.bulkEdit = (req, res) => {
     });
   }
 
+  // set the seat name
   seats.forEach((seat, index) => {
     let name = intToChar(seat.y + 1) + "-" + (seat.x + 1).toString();
     seats[index].name = name;
-
-    console.log(name);
   });
-
-  console.log(seats);
 
   // Create all the seats in the database (used for update)
   Seat.bulkCreate(seats, { updateOnDuplicate: ["name", "x", "y"] })
