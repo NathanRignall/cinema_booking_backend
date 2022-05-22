@@ -8,6 +8,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       allowNull: false,
     },
+    cost: {
+      type: Sequelize.INTEGER(8),
+      allowNull: false,
+    }
   });
 
   return Purchase;

@@ -6,11 +6,12 @@ module.exports = (sequelize, Sequelize) => {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       columns: {
         type: Sequelize.INTEGER(2),
-      }
+        allowNull: false,
+      },
     });
   
     return Screen;

@@ -204,3 +204,51 @@ exports.bulkEdit = (req, res) => {
       });
     });
 };
+
+// bulk delete seat from the database.
+exports.bulkDelete = (req, res) => {
+  // get req params
+  const id = req.params.id;
+
+  // get the info from json
+  const json = req.body;
+
+  // set the vars from post
+  const seatIds = json.seatIds;
+
+  // Delete the specific seat in db
+  Seat.destroy({
+    where: { id: seatIds },
+  })
+    .then((number) => {
+      if (number == seatIds.length) {
+        // retun the correct vars
+        res.status(200).json({
+          message: "okay",
+          reqid: res.locals.reqid,
+        });
+      } else {
+        // retun the correct vars
+        res.status(400).json({
+          message: "Some SeatIds invalid",
+          reqid: res.locals.reqid,
+        });
+      }
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "seat.controller.bulkDelete.1",
+        code: error.code,
+        message: error.message || "Some error occurred while bulk deleting the seats",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};

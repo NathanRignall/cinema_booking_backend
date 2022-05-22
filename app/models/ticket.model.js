@@ -8,10 +8,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      color: {
-        type: Sequelize.STRING(7),
+      price: {
+        type: Sequelize.INTEGER(3),
         allowNull: false,
-      },
+      }
     });
   
     return Type;

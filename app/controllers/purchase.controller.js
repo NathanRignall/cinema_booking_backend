@@ -9,7 +9,7 @@ const Seat = db.seats;
 
 // get all purchases from the database.
 exports.list = (req, res) => {
-  Purchase.findAll({ include: ["screening", db.seats] })
+  Purchase.findAll({ include: ["screening", Seat] })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
@@ -45,7 +45,7 @@ exports.create = async function (req, res, next) {
   // set the vars from post
   const paid = json.paid;
   const screeningId = json.screeningId;
-  const seatIds = json.seatIds;
+  const seats = json.seats;
 
   // check if paid is present
   if (!paid) {
@@ -62,19 +62,21 @@ exports.create = async function (req, res, next) {
   const purchase = {
     id: id,
     paid: paid,
+    cost: 0,
   };
 
   const t = await db.sequelize.transaction();
 
   Purchase.create(purchase, { transaction: t })
     .then((data) => {
-      let requests = seatIds.map((seatId) => {
+      let requests = seats.map((seat) => {
         return new Promise((resolve, reject) => {
           let reservation = {
             id: crypto.randomUUID(),
-            seatId: seatId,
+            seatId: seat.id,
             screeningId: screeningId,
             purchaseId: id,
+            ticketId: seat.ticketId,
           };
 
           Reservation.create(reservation, { transaction: t })

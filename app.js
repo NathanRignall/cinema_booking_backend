@@ -24,6 +24,7 @@ const screeningRouter = require("./app/routes/screening.route");
 const purchaseRouter = require("./app/routes/purchase.route");
 const typeRouter = require("./app/routes/type.route");
 const seatRouter = require("./app/routes/seat.route");
+const ticketRouter = require("./app/routes/ticket.route");
 
 // setup cors middleware
 const corsOptions = {
@@ -70,5 +71,6 @@ app.use("/admin/screening", screeningRouter);
 app.use("/admin/purchase", purchaseRouter);
 app.use("/admin/type", typeRouter);
 app.use("/admin/seat", seatRouter);
+app.use("/admin/ticket", ticketRouter);
 
 module.exports = app;

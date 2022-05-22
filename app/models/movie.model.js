@@ -6,15 +6,15 @@ module.exports = (sequelize, Sequelize) => {
       },
       title: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       description: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       duration: {
         type: Sequelize.INTEGER(3),
-        allowNull: false
+        allowNull: false,
       }
     });
   

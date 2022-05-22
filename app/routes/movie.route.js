@@ -1,11 +1,11 @@
 // router
-var router = require("express").Router();
+const router = require("express").Router();
 
 // controllers
 const movie = require("../controllers/movie.controller.js");
 
 // middleware
-var auth = require("../middleware/auth.middleware");
+const auth = require("../middleware/auth.middleware");
 
 // list all movies
 router.get("/", auth.employee(), movie.list);

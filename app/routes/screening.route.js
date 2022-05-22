@@ -1,11 +1,11 @@
 // router
-var router = require("express").Router();
+const router = require("express").Router();
 
 // controllers
 const screening = require("../controllers/screening.controller.js");
 
 // middleware
-var auth = require("../middleware/auth.middleware");
+const auth = require("../middleware/auth.middleware");
 
 // list all screenings
 router.get("/", auth.employee(), screening.list);
