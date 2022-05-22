@@ -16,5 +16,8 @@ router.get("/find", auth.employee(), type.find);
 // create a type
 router.post("/", auth.employee(), type.create);
 
+// delete type
+router.delete("/:id", auth.employee(), type.delete);
+
 // export the router
 module.exports = router;

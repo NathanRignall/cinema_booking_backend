@@ -8,10 +8,6 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.DATE,
       allowNull: false,
     },
-    price: {
-      type: Sequelize.INTEGER(5),
-      allowNull: false,
-    }
   });
 
   return Screening;

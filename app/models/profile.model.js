@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-    const Type = sequelize.define("type", {
+    const Profile = sequelize.define("profile", {
       id: {
         primaryKey: true,
         type: Sequelize.UUID,
@@ -14,5 +14,5 @@ module.exports = (sequelize, Sequelize) => {
       }
     });
   
-    return Type;
+    return Profile;
   };

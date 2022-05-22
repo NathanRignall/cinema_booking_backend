@@ -130,7 +130,6 @@ exports.create = function (req, res, next) {
 
   // set the vars from post
   const time = json.time;
-  const price = json.price;
   const movieId = json.movieId;
   const screenId = json.screenId;
 
@@ -143,11 +142,20 @@ exports.create = function (req, res, next) {
     });
   }
 
-  // check if price is present
-  if (!price) {
+  // check if movieId is present
+  if (!movieId) {
     // retun the correct vars
     return res.status(400).json({
-      message: "Price input value missing",
+      message: "MovieId input value missing",
+      reqid: res.locals.reqid,
+    });
+  }
+
+  // check if screenId is present
+  if (!screenId) {
+    // retun the correct vars
+    return res.status(400).json({
+      message: "ScreenId input value missing",
       reqid: res.locals.reqid,
     });
   }
@@ -159,7 +167,6 @@ exports.create = function (req, res, next) {
   const screening = {
     id: id,
     time: time,
-    price: price,
     movieId: movieId,
     screenId: screenId,
   };
@@ -203,7 +210,6 @@ exports.edit = (req, res) => {
 
   // set the vars from post
   const time = json.time;
-  const price = json.price;
 
   // check if time is present
   if (!time) {
@@ -214,19 +220,9 @@ exports.edit = (req, res) => {
     });
   }
 
-  // check if price is present
-  if (!price) {
-    // retun the correct vars
-    return res.status(400).json({
-      message: "Price input value missing",
-      reqid: res.locals.reqid,
-    });
-  }
-
   // create screening object
   const screening = {
     time: time,
-    price: price,
   };
 
   // Update the specific screening in the db

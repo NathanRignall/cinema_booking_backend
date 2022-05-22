@@ -24,7 +24,7 @@ db.sequelize = sequelize;
 db.users = require("./user.model.js")(sequelize, Sequelize);
 db.employees = require("./employee.model.js")(sequelize, Sequelize);
 
-db.tickets = require("./ticket.model.js")(sequelize, Sequelize);
+db.profiles = require("./profile.model.js")(sequelize, Sequelize);
 db.purchases = require("./purchase.model.js")(sequelize, Sequelize);
 db.reservations = require("./reservation.model.js")(sequelize, Sequelize);
 db.types = require("./type.model.js")(sequelize, Sequelize);
@@ -33,9 +33,9 @@ db.screens = require("./screen.model.js")(sequelize, Sequelize);
 db.movies = require("./movie.model.js")(sequelize, Sequelize);
 db.screenings = require("./screening.model.js")(sequelize, Sequelize);
 
-// create the realtionship between purchases and tickets (one to many)
-db.tickets.hasMany(db.reservations, { as: "reservations" });
-db.reservations.belongsTo(db.tickets, { foreignKey: "ticketId", as: "ticket" });
+// create the realtionship between purchases and profiles (one to many)
+db.profiles.hasMany(db.reservations, { as: "reservations" });
+db.reservations.belongsTo(db.profiles, { foreignKey: "profileId", as: "profile" });
 
 // create the realtionship between purchases and reservations (one to many)
 db.purchases.hasMany(db.reservations, { as: "reservations" });

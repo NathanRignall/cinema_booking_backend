@@ -12,6 +12,10 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING(7),
         allowNull: false,
       },
+      price: {
+        type: Sequelize.INTEGER(3),
+        allowNull: false,
+      }
     });
   
     return Type;

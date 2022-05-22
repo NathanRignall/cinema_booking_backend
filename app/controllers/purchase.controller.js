@@ -76,7 +76,7 @@ exports.create = async function (req, res, next) {
             seatId: seat.id,
             screeningId: screeningId,
             purchaseId: id,
-            ticketId: seat.ticketId,
+            profileId: seat.profileId,
           };
 
           Reservation.create(reservation, { transaction: t })
