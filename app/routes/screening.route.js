@@ -10,6 +10,9 @@ const auth = require("../middleware/auth.middleware");
 // list all screenings
 router.get("/", auth.employee(), screening.list);
 
+// find screening
+router.get("/find", auth.employee(), screening.find);
+
 // info on screening
 router.get("/:id", auth.employee(), screening.info);
 

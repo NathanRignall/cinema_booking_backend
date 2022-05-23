@@ -7,6 +7,7 @@ const db = require("../models");
 const Screening = db.screenings;
 const Screen = db.screens;
 const Seat = db.seats;
+const Movie = db.movies;
 const Type = db.types;
 
 // get all screenings from the database.
@@ -24,6 +25,65 @@ exports.list = (req, res) => {
       // push the error to buffer
       res.locals.errors.push({
         location: "screening.controller.list.1",
+        code: error.code,
+        message:
+          error.message || "Some error occurred while finding the screenings",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};
+
+// search screening from the database.
+exports.find = (req, res) => {
+  // set req parms
+  const screen = req.query.screen;
+  const pastDate = new Date(req.query.date);
+  pastDate.setHours(0, 0, 0, 0);
+  const futureDate = new Date(req.query.date);
+  futureDate.setHours(24, 0, 0, 0);
+
+  // find the screening in db
+  Screening.findAll({
+    include: [
+      {
+        model: Movie,
+        as: "movie",
+      },
+      {
+        model: Screen,
+        as: "screen",
+        where: {
+          id: {
+            [db.Sequelize.Op.like]: `%${screen}%`,
+          },
+        },
+      },
+    ],
+    where: {
+      time: {
+        [db.Sequelize.Op.between]: [pastDate, futureDate],
+      },
+    },
+  })
+    .then((data) => {
+      // retun the correct vars
+      res.status(200).json({
+        payload: data,
+        message: "okay",
+        reqid: res.locals.reqid,
+      });
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "screening.controller.find.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screenings",
@@ -71,7 +131,6 @@ exports.info = (req, res) => {
   })
     .then((data) => {
       if (data) {
-
         let responseData = data.toJSON();
 
         responseData.screen.seats.map((item, key, list) => {
@@ -85,10 +144,7 @@ exports.info = (req, res) => {
           } else {
             responseData.screen.seats[key].occupied = false;
           }
-
-         })
-
-
+        });
 
         // retun the correct vars
         res.status(200).json({

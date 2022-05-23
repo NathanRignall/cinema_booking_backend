@@ -54,7 +54,7 @@ db.movies.hasMany(db.screenings, { as: "screenings" });
 db.screenings.belongsTo(db.movies, { foreignKey: "movieId", as: "movie" });
 
 // create the realtionship between screenings and seets (one to many)
-db.screens.hasMany(db.screenings, { as: "screening" });
+db.screens.hasMany(db.screenings, { as: "screenings" });
 db.screenings.belongsTo(db.screens, { foreignKey: "screenId", as: "screen" });
 
 // create the relationship between seats and screenings via reservations (many to many)
