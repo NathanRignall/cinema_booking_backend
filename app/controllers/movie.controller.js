@@ -8,7 +8,7 @@ const Movie = db.movies;
 
 // get all movies from the database.
 exports.list = (req, res) => {
-  Movie.findAll()
+  Movie.findAll({ order: [["updatedAt", "DESC"]] })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
@@ -78,43 +78,43 @@ exports.find = (req, res) => {
 
 // get specific movie from the database.
 exports.info = (req, res) => {
-    // get req params
-    const id = req.params.id;
+  // get req params
+  const id = req.params.id;
 
-    // Find the specific movie in db
-    Movie.findByPk(id, { include: ["screenings"] })
-        .then((data) => {
-            if (data) {
-                // retun the correct vars
-                res.status(200).json({
-                    payload: data,
-                    message: "okay",
-                    reqid: res.locals.reqid,
-                });
-            } else {
-                // retun the correct vars
-                res.status(400).json({
-                    message: "Movie not found",
-                    reqid: res.locals.reqid,
-                });
-            }
-        })
-        .catch((error) => {
-            // push the error to buffer
-            res.locals.errors.push({
-                location: "movie.controller.info.1",
-                code: error.code,
-                message: error.message || "Some error occurred while finding the movie",
-                from: "sequelize",
-            });
-
-            // return the correct vars
-            res.status(500).json({
-                message: "Server error",
-                errors: res.locals.errors,
-                reqid: res.locals.reqid,
-            });
+  // Find the specific movie in db
+  Movie.findByPk(id, { include: ["screenings"] })
+    .then((data) => {
+      if (data) {
+        // retun the correct vars
+        res.status(200).json({
+          payload: data,
+          message: "okay",
+          reqid: res.locals.reqid,
         });
+      } else {
+        // retun the correct vars
+        res.status(400).json({
+          message: "Movie not found",
+          reqid: res.locals.reqid,
+        });
+      }
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "movie.controller.info.1",
+        code: error.code,
+        message: error.message || "Some error occurred while finding the movie",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
 };
 
 // create a movie in the database.
@@ -267,7 +267,8 @@ exports.edit = (req, res) => {
       res.locals.errors.push({
         location: "movie.controller.info.1",
         code: error.code,
-        message: error.message || "Some error occurred while updating the movie",
+        message:
+          error.message || "Some error occurred while updating the movie",
         from: "sequelize",
       });
 

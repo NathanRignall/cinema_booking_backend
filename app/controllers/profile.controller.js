@@ -8,7 +8,9 @@ const Profile = db.profiles;
 
 // get all profiles from the database.
 exports.list = (req, res) => {
-  Profile.findAll()
+  Profile.findAll({
+    order: [["price", "DESC"]],
+  })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
@@ -62,7 +64,8 @@ exports.find = (req, res) => {
       res.locals.errors.push({
         location: "profile.controller.find.1",
         code: error.code,
-        message: error.message || "Some error occurred while finding the profiles",
+        message:
+          error.message || "Some error occurred while finding the profiles",
         from: "sequelize",
       });
 

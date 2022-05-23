@@ -10,7 +10,7 @@ const Type = db.types;
 
 // get all screens from the database.
 exports.list = (req, res) => {
-  Screen.findAll()
+  Screen.findAll({ order: [["name", "ASC"]] })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
@@ -89,7 +89,7 @@ exports.info = (req, res) => {
       {
         model: Seat,
         as: "seats",
-        attributes:['id', 'name', 'x', 'y'],
+        attributes: ["id", "name", "x", "y"],
         include: [
           {
             model: Type,

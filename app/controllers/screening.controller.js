@@ -12,7 +12,10 @@ const Type = db.types;
 
 // get all screenings from the database.
 exports.list = (req, res) => {
-  Screening.findAll({ include: ["screen", "movie"] })
+  Screening.findAll({
+    include: ["screen", "movie"],
+    order: [["time", "ASC"]],
+  })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
@@ -45,7 +48,7 @@ exports.find = (req, res) => {
   // set req parms
   const screen = req.query.screen;
   const movie = req.query.movie;
-  
+
   const pastDate = new Date(req.query.date);
   pastDate.setHours(0, 0, 0, 0);
   const futureDate = new Date(req.query.date);
@@ -98,7 +101,7 @@ exports.find = (req, res) => {
           [db.Sequelize.Op.between]: [pastDate, futureDate],
         },
       },
-    }
+    };
   } else {
     command = {
       include: [
@@ -116,7 +119,7 @@ exports.find = (req, res) => {
           [db.Sequelize.Op.between]: [pastDate, futureDate],
         },
       },
-    }
+    };
   }
 
   // find the screening in db

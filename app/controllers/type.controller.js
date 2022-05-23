@@ -8,7 +8,9 @@ const Type = db.types;
 
 // get all types from the database.
 exports.list = (req, res) => {
-  Type.findAll()
+  Type.findAll({
+    order: [["price", "DESC"]],
+  })
     .then((data) => {
       // retun the correct vars
       res.status(200).json({
@@ -180,8 +182,7 @@ exports.delete = (req, res) => {
       res.locals.errors.push({
         location: "type.controller.delete.1",
         code: error.code,
-        message:
-          error.message || "Some error occurred while deleting the type",
+        message: error.message || "Some error occurred while deleting the type",
         from: "sequelize",
       });
 
