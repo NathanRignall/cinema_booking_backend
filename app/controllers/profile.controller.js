@@ -36,6 +36,45 @@ exports.list = (req, res) => {
     });
 };
 
+// search profile from the database.
+exports.find = (req, res) => {
+  // set req parms
+  const find = req.query.find;
+
+  // find the profile in db
+  Profile.findAll({
+    where: {
+      name: {
+        [db.Sequelize.Op.like]: `%${find}%`,
+      },
+    },
+  })
+    .then((data) => {
+      // retun the correct vars
+      res.status(200).json({
+        payload: data,
+        message: "okay",
+        reqid: res.locals.reqid,
+      });
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "profile.controller.find.1",
+        code: error.code,
+        message: error.message || "Some error occurred while finding the profiles",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};
+
 // create a profile in the database.
 exports.create = function (req, res, next) {
   // get the info from json

@@ -44,34 +44,83 @@ exports.list = (req, res) => {
 exports.find = (req, res) => {
   // set req parms
   const screen = req.query.screen;
+  const movie = req.query.movie;
+  
   const pastDate = new Date(req.query.date);
   pastDate.setHours(0, 0, 0, 0);
   const futureDate = new Date(req.query.date);
   futureDate.setHours(24, 0, 0, 0);
 
-  // find the screening in db
-  Screening.findAll({
-    include: [
-      {
-        model: Movie,
-        as: "movie",
-      },
-      {
-        model: Screen,
-        as: "screen",
-        where: {
-          id: {
-            [db.Sequelize.Op.like]: `%${screen}%`,
+  var command = {};
+
+  if (screen) {
+    command = {
+      include: [
+        {
+          model: Movie,
+          as: "movie",
+        },
+        {
+          model: Screen,
+          as: "screen",
+          where: {
+            id: {
+              [db.Sequelize.Op.like]: screen,
+            },
           },
         },
+      ],
+      where: {
+        time: {
+          [db.Sequelize.Op.between]: [pastDate, futureDate],
+        },
       },
-    ],
-    where: {
-      time: {
-        [db.Sequelize.Op.between]: [pastDate, futureDate],
+    };
+  } else if (movie) {
+    command = {
+      include: [
+        {
+          model: Movie,
+          as: "movie",
+          where: {
+            id: {
+              [db.Sequelize.Op.like]: movie,
+            },
+          },
+        },
+        {
+          model: Screen,
+          as: "screen",
+        },
+      ],
+      where: {
+        time: {
+          [db.Sequelize.Op.between]: [pastDate, futureDate],
+        },
       },
-    },
-  })
+    }
+  } else {
+    command = {
+      include: [
+        {
+          model: Movie,
+          as: "movie",
+        },
+        {
+          model: Screen,
+          as: "screen",
+        },
+      ],
+      where: {
+        time: {
+          [db.Sequelize.Op.between]: [pastDate, futureDate],
+        },
+      },
+    }
+  }
+
+  // find the screening in db
+  Screening.findAll(command)
     .then((data) => {
       // retun the correct vars
       res.status(200).json({

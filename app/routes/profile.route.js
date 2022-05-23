@@ -10,6 +10,9 @@ const auth = require("../middleware/auth.middleware");
 // list all profiles
 router.get("/", auth.employee(), profile.list);
 
+// find profile
+router.get("/find", auth.employee(), profile.find);
+
 // create a profile
 router.post("/", auth.employee(), profile.create);
 

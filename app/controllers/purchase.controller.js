@@ -56,6 +56,24 @@ exports.create = async function (req, res, next) {
     });
   }
 
+  // check if screeningId is present
+  if (!screeningId) {
+    // retun the correct vars
+    return res.status(400).json({
+      message: "ScreeningId input value missing",
+      reqid: res.locals.reqid,
+    });
+  }
+  
+  // check if screeningId is present
+  if (!seats) {
+    // retun the correct vars
+    return res.status(400).json({
+      message: "Seats input value missing",
+      reqid: res.locals.reqid,
+    });
+  }
+
   const id = crypto.randomUUID();
 
   // create purchase object
