@@ -151,6 +151,112 @@ exports.find = (req, res) => {
     });
 };
 
+// get stats about screenings
+exports.stats = (req, res) => {
+  // set req parms
+  const screenId = req.query.screenId;
+  const movieId = req.query.movieId;
+  const occupied = req.query.occupied;
+
+  // get the config to use with the query
+  const config = {
+    include: [
+      occupied
+        ? {
+            model: Seat,
+            as: "seats",
+            attributes: [],
+          }
+        : {
+            model: Screen,
+            as: "screen",
+            attributes: [],
+            include: occupied
+              ? []
+              : [
+                  {
+                    model: Seat,
+                    as: "seats",
+                    attributes: [],
+                  },
+                ],
+          },
+      screenId
+        ? {
+            model: Screen,
+            as: "screen",
+            attributes: ["name"],
+            where: {
+              id: screenId,
+            },
+          }
+        : {
+            model: Screen,
+            as: "screen",
+            attributes: [],
+          },
+      movieId
+        ? {
+            model: Movie,
+            as: "movie",
+            attributes: ["title"],
+            where: {
+              id: movieId,
+            },
+          }
+        : {
+            model: Screen,
+            as: "screen",
+            attributes: [],
+          },
+    ],
+    attributes: [
+      occupied
+        ? [
+            db.Sequelize.fn("COUNT", db.Sequelize.col("seats.id")),
+            "occupiedSeats",
+          ]
+        : [
+            db.Sequelize.fn("COUNT", db.Sequelize.col("screen.seats.id")),
+            "totalSeats",
+          ],
+      [db.Sequelize.fn("DATE", db.Sequelize.col("time")), "Date"],
+    ],
+    group: [
+      [db.Sequelize.fn("DATE", db.Sequelize.col("time")), "Date"],
+      screenId ? "screen.id" : movieId ? "movie.id" : "Date",
+    ],
+    options: { omitNull: true },
+  };
+
+  // find occupied seats in the db
+  Screening.findAll(config)
+    .then((data) => {
+      // retun the correct vars
+      res.status(200).json({
+        payload: data,
+        message: "okay",
+        reqid: res.locals.reqid,
+      });
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "screening.controller.stats.1",
+        code: error.code,
+        message: error.message || "Some error occurred while finding the stats",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};
+
 // get specific screening from the database.
 exports.info = (req, res) => {
   // get req params

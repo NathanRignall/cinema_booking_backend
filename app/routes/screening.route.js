@@ -13,6 +13,9 @@ router.get("/", auth.employee(), screening.list);
 // find screening
 router.get("/find", auth.employee(), screening.find);
 
+// screening stats
+router.get("/stats", auth.employee(), screening.stats);
+
 // info on screening
 router.get("/:id", auth.employee(), screening.info);
 
