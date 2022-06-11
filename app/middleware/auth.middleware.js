@@ -25,3 +25,17 @@ exports.employee = () => {
     }
   };
 };
+
+exports.both = () => {
+  return (req, res, next) => {
+    // check if the user is logged in
+    if (req.session.user || req.session.employee ) {
+      next();
+    } else {
+      res.status(401).json({
+        message: "User not logged in",
+        reqid: res.locals.reqid,
+      });
+    }
+  };
+};

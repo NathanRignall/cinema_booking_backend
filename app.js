@@ -17,6 +17,8 @@ const app = express();
 
 // import the user routes
 const sessionRouter = require("./app/routes/session.route");
+const movieRouter = require("./app/routes/movie.route");
+const screeningRouter = require("./app/routes/screening.route");
 
 // import the admin routes
 const adminSessionRouter = require("./app/routes/admin.session.route");
@@ -66,6 +68,8 @@ app.use(
 
 // use the user routes
 app.use("/session", sessionRouter);
+app.use("/movie", movieRouter);
+app.use("/screening", screeningRouter);
 
 // use the admin routes
 app.use("/admin/session", adminSessionRouter);
