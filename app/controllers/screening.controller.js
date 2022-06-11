@@ -12,9 +12,18 @@ const Type = db.types;
 
 // get all screenings from the database.
 exports.list = (req, res) => {
+  // set req params
+  const start = new Date(req.query.start);
+  const end = new Date(req.query.end);
+
   Screening.findAll({
     include: ["screen", "movie"],
     order: [["time", "ASC"]],
+    where: {
+      time: {
+        [db.Sequelize.Op.between]: [start, end],
+      },
+    },
   })
     .then((data) => {
       // retun the correct vars
@@ -220,11 +229,11 @@ exports.stats = (req, res) => {
             db.Sequelize.fn("COUNT", db.Sequelize.col("screen.seats.id")),
             "totalSeats",
           ],
-      [db.Sequelize.fn("DATE", db.Sequelize.col("time")), "Date"],
+      [db.Sequelize.fn("DATE", db.Sequelize.col("time")), "date"],
     ],
     group: [
-      [db.Sequelize.fn("DATE", db.Sequelize.col("time")), "Date"],
-      screenId ? "screen.id" : movieId ? "movie.id" : "Date",
+      [db.Sequelize.fn("DATE", db.Sequelize.col("time")), "date"],
+      screenId ? "screen.id" : movieId ? "movie.id" : "date",
     ],
     options: { omitNull: true },
   };
