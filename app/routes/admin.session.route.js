@@ -2,7 +2,7 @@
 const router = require("express").Router();
 
 // controllers
-const employee = require("../controllers/employee.controller.js");
+const employee = require("../controllers/admin.session.controller.js");
 
 // middleware
 const auth = require("../middleware/auth.middleware");

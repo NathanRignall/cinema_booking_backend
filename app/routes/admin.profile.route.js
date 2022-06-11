@@ -2,7 +2,7 @@
 const router = require("express").Router();
 
 // controllers
-const profile = require("../controllers/profile.controller.js");
+const profile = require("../controllers/admin.profile.controller.js");
 
 // middleware
 const auth = require("../middleware/auth.middleware");

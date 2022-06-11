@@ -2,7 +2,7 @@
 const router = require("express").Router();
 
 // controllers
-const purchase = require("../controllers/purchase.controller.js");
+const purchase = require("../controllers/admin.purchase.controller.js");
 
 // middleware
 const auth = require("../middleware/auth.middleware");

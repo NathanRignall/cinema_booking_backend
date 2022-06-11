@@ -15,16 +15,18 @@ db.sequelize.sync();
 // init the app
 const app = express();
 
-// import the routes
+// import the user routes
 const sessionRouter = require("./app/routes/session.route");
-const employeeRouter = require("./app/routes/employee.route");
-const movieRouter = require("./app/routes/movie.route");
-const screenRouter = require("./app/routes/screen.route");
-const screeningRouter = require("./app/routes/screening.route");
-const purchaseRouter = require("./app/routes/purchase.route");
-const typeRouter = require("./app/routes/type.route");
-const seatRouter = require("./app/routes/seat.route");
-const profileRouter = require("./app/routes/profile.route");
+
+// import the admin routes
+const adminSessionRouter = require("./app/routes/admin.session.route");
+const adminMovieRouter = require("./app/routes/admin.movie.route");
+const adminProfileRouter = require("./app/routes/admin.profile.route");
+const adminPurchaseRouter = require("./app/routes/admin.purchase.route");
+const adminScreenRouter = require("./app/routes/admin.screen.route");
+const adminScreeningRouter = require("./app/routes/admin.screening.route");
+const adminSeatRouter = require("./app/routes/admin.seat.route");
+const adminTypeRouter = require("./app/routes/admin.type.route");
 
 // setup cors middleware
 const corsOptions = {
@@ -62,15 +64,17 @@ app.use(
   })
 );
 
-// use the routes
+// use the user routes
 app.use("/session", sessionRouter);
-app.use("/employee", employeeRouter);
-app.use("/admin/movie", movieRouter);
-app.use("/admin/screen", screenRouter);
-app.use("/admin/screening", screeningRouter);
-app.use("/admin/purchase", purchaseRouter);
-app.use("/admin/type", typeRouter);
-app.use("/admin/seat", seatRouter);
-app.use("/admin/profile", profileRouter);
+
+// use the admin routes
+app.use("/admin/session", adminSessionRouter);
+app.use("/admin/movie", adminMovieRouter);
+app.use("/admin/profile", adminProfileRouter);
+app.use("/admin/purchase", adminPurchaseRouter);
+app.use("/admin/screen", adminScreenRouter);
+app.use("/admin/screening", adminScreeningRouter);
+app.use("/admin/seat", adminSeatRouter);
+app.use("/admin/type", adminTypeRouter);
 
 module.exports = app;

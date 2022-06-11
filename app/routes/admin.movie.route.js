@@ -2,19 +2,19 @@
 const router = require("express").Router();
 
 // controllers
-const movie = require("../controllers/movie.controller.js");
+const movie = require("../controllers/admin.movie.controller.js");
 
 // middleware
 const auth = require("../middleware/auth.middleware");
 
 // list all movies
-router.get("/", movie.list);
+router.get("/", auth.employee(), movie.list);
 
 // find movie
-router.get("/find", movie.find);
+router.get("/find", auth.employee(), movie.find);
 
 // info on movie
-router.get("/:id", movie.info);
+router.get("/:id", auth.employee(), movie.info);
 
 // create a movie
 router.post("/", auth.employee(), movie.create);

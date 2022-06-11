@@ -2,7 +2,7 @@
 const router = require("express").Router();
 
 // controllers
-const seat = require("../controllers/seat.controller.js");
+const seat = require("../controllers/admin.seat.controller.js");
 
 // middleware
 const auth = require("../middleware/auth.middleware");
