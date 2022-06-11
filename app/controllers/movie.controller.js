@@ -5,6 +5,7 @@ const db = require("../models");
 
 // load the db
 const Movie = db.movies;
+const Screening = db.screenings;
 
 // get all movies from the database.
 exports.list = (req, res) => {
@@ -39,16 +40,38 @@ exports.list = (req, res) => {
 // search movie from the database.
 exports.find = (req, res) => {
   // set req parms
-  const find = req.query.find;
+  const title = req.query.title;
+  const start = new Date(req.query.start);
+  const end = new Date(req.query.end);
 
-  // find the movie in db
-  Movie.findAll({
+  let query = {
     where: {
       title: {
-        [db.Sequelize.Op.like]: `%${find}%`,
+        [db.Sequelize.Op.like]: `%${title}%`,
       },
     },
-  })
+  }
+
+  if (start & end) {
+    query = {
+      include: [
+        {
+          model: Screening,
+          as: "screenings",
+          attributes: [],
+          where: {
+            time: {
+              [db.Sequelize.Op.between]: [start, end],
+            },
+          },
+        }],
+      order: [["updatedAt", "DESC"]],
+      group: "id",
+    }
+  }
+
+  // find the movie in db
+  Movie.findAll(query)
     .then((data) => {
       // retun the correct vars
       res.status(200).json({

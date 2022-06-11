@@ -8,13 +8,13 @@ const movie = require("../controllers/movie.controller.js");
 const auth = require("../middleware/auth.middleware");
 
 // list all movies
-router.get("/", auth.employee(), movie.list);
+router.get("/", movie.list);
 
 // find movie
-router.get("/find", auth.employee(), movie.find);
+router.get("/find", movie.find);
 
 // info on movie
-router.get("/:id", auth.employee(), movie.info);
+router.get("/:id", movie.info);
 
 // create a movie
 router.post("/", auth.employee(), movie.create);
