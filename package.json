@@ -17,6 +17,7 @@
     "mariadb": "^3.0.0",
     "morgan": "~1.9.1",
     "sequelize": "^6.19.0",
+    "stripe": "^9.8.0",
     "validator": "^13.7.0"
   }
 }

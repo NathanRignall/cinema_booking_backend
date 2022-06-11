@@ -18,6 +18,8 @@ const app = express();
 // import the user routes
 const sessionRouter = require("./app/routes/session.route");
 const movieRouter = require("./app/routes/movie.route");
+const profileRouter = require("./app/routes/profile.route");
+const purchaseRouter = require("./app/routes/purchase.route");
 const screeningRouter = require("./app/routes/screening.route");
 
 // import the admin routes
@@ -69,6 +71,8 @@ app.use(
 // use the user routes
 app.use("/session", sessionRouter);
 app.use("/movie", movieRouter);
+app.use("/profile", profileRouter);
+app.use("/purchase", purchaseRouter);
 app.use("/screening", screeningRouter);
 
 // use the admin routes

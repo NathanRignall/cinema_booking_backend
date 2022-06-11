@@ -83,7 +83,7 @@ exports.info = (req, res) => {
               {
                 model: Type,
                 as: "type",
-                attributes: ["name", "color"],
+                attributes: ["name", "color", "price"],
               },
             ],
           },
