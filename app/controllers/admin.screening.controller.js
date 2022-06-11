@@ -36,7 +36,7 @@ exports.list = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screening.controller.list.1",
+        location: "admin.screening.controller.list.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screenings",
@@ -144,7 +144,7 @@ exports.find = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screening.controller.find.1",
+        location: "admin.screening.controller.find.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screenings",
@@ -251,7 +251,7 @@ exports.stats = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screening.controller.stats.1",
+        location: "admin.screening.controller.stats.1",
         code: error.code,
         message: error.message || "Some error occurred while finding the stats",
         from: "sequelize",
@@ -330,7 +330,7 @@ exports.info = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screening.controller.info.1",
+        location: "admin.screening.controller.info.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screening",
@@ -407,7 +407,7 @@ exports.create = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screening.controller.create.1",
+        location: "admin.screening.controller.create.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the screening",
@@ -472,7 +472,7 @@ exports.edit = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screening.controller.info.1",
+        location: "admin.screening.controller.info.1",
         code: error.code,
         message:
           error.message || "Some error occurred while updating the screening",
@@ -515,7 +515,7 @@ exports.delete = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screening.controller.delete.1",
+        location: "admin.screening.controller.delete.1",
         code: error.code,
         message:
           error.message || "Some error occurred while deleting the screening",

@@ -112,7 +112,7 @@ exports.register = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "employee.controller.register.1",
+        location: "admin.employee.controller.register.1",
         code: error.code,
         message: error.message || "Some error occurred while creating the employee",
         from: "sequelize",
@@ -203,7 +203,7 @@ exports.login = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "employee.controller.login.1",
+        location: "admin.employee.controller.login.1",
         code: error.code,
         message: error.message || "Some error occurred while finding the employee",
         from: "sequelize",
@@ -307,7 +307,7 @@ exports.update = function (req, res, next) {
       } else {
         // push the error to buffer
         res.locals.errors.push({
-          location: "employee.controller.update.1",
+          location: "admin.employee.controller.update.1",
           code: "no-update",
           message: "Employee not updated",
           from: "manual",
@@ -324,7 +324,7 @@ exports.update = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "employee.controller.update.2",
+        location: "admin.employee.controller.update.2",
         code: error.code,
         message: error.message || "Some error occurred while updating the employee",
         from: "sequelize",
@@ -416,7 +416,7 @@ exports.password = function (req, res, next) {
               } else {
                 // push the error to buffer
                 res.locals.errors.push({
-                  location: "employee.controller.password.1",
+                  location: "admin.employee.controller.password.1",
                   code: "no-update",
                   message: "Employee not found during update",
                   from: "manual",
@@ -433,7 +433,7 @@ exports.password = function (req, res, next) {
             .catch((error) => {
               // push the error to buffer
               res.locals.errors.push({
-                location: "employee.controller.password.2",
+                location: "admin.employee.controller.password.2",
                 code: error.code,
                 message:
                   error.message ||
@@ -466,7 +466,7 @@ exports.password = function (req, res, next) {
     .catch((err) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "employee.controller.password.3",
+        location: "admin.employee.controller.password.3",
         code: error.code,
         message: err.message || "Some error occurred while finding the employee",
         from: "sequelize",

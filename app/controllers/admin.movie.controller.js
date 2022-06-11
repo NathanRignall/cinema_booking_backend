@@ -21,7 +21,7 @@ exports.list = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "movie.controller.list.1",
+        location: "admin.movie.controller.list.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the movies",
@@ -83,7 +83,7 @@ exports.find = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "movie.controller.find.1",
+        location: "admin.movie.controller.find.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the movies",
@@ -125,7 +125,7 @@ exports.info = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "movie.controller.info.1",
+        location: "admin.movie.controller.info.1",
         code: error.code,
         message: error.message || "Some error occurred while finding the movie",
         from: "sequelize",
@@ -201,7 +201,7 @@ exports.create = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "movie.controller.create.1",
+        location: "admin.movie.controller.create.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the movie.",
@@ -288,7 +288,7 @@ exports.edit = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "movie.controller.info.1",
+        location: "admin.movie.controller.info.1",
         code: error.code,
         message:
           error.message || "Some error occurred while updating the movie",
@@ -331,7 +331,7 @@ exports.delete = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "movie.controller.delete.1",
+        location: "admin.movie.controller.delete.1",
         code: error.code,
         message:
           error.message || "Some error occurred while deleting the movie",

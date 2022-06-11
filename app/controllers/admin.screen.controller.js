@@ -22,7 +22,7 @@ exports.list = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screen.controller.list.1",
+        location: "admin.screen.controller.list.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screens",
@@ -62,7 +62,7 @@ exports.find = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screen.controller.find.1",
+        location: "admin.screen.controller.find.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screens",
@@ -119,7 +119,7 @@ exports.info = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screen.controller.info.1",
+        location: "admin.screen.controller.info.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the screen",
@@ -185,7 +185,7 @@ exports.create = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screen.controller.create.1",
+        location: "admin.screen.controller.create.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the screen.",
@@ -261,7 +261,7 @@ exports.edit = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screen.controller.info.1",
+        location: "admin.screen.controller.info.1",
         code: error.code,
         message:
           error.message || "Some error occurred while updating the screen",
@@ -304,7 +304,7 @@ exports.delete = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "screen.controller.delete.1",
+        location: "admin.screen.controller.delete.1",
         code: error.code,
         message:
           error.message || "Some error occurred while deleting the screen",

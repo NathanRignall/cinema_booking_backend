@@ -39,7 +39,7 @@ exports.delete = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "seat.controller.delete.1",
+        location: "admin.seat.controller.delete.1",
         code: error.code,
         message: error.message || "Some error occurred while deleting the seat",
         from: "sequelize",
@@ -108,7 +108,7 @@ exports.bulkCreate = function (req, res, next) {
   for (let row_count = 0; row_count < rows; row_count++) {
     for (let column_count = 0; column_count < columns; column_count++) {
       let id = crypto.randomUUID();
-      let name = intToChar(row_count + 1) + "-" + (column_count + 1).toString();
+      let name = intToChar(row_count + 1) + (column_count + 1).toString();
 
       seats.push({
         id: id,
@@ -134,7 +134,7 @@ exports.bulkCreate = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "seat.controller.bulkCreate.1",
+        location: "admin.seat.controller.bulkCreate.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the seats.",
@@ -172,7 +172,7 @@ exports.bulkEdit = (req, res) => {
 
   // set the seat name
   seats.forEach((seat, index) => {
-    let name = intToChar(seat.y + 1) + "-" + (seat.x + 1).toString();
+    let name = intToChar(seat.y + 1) + (seat.x + 1).toString();
     seats[index].name = name;
   });
 
@@ -189,7 +189,7 @@ exports.bulkEdit = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "seat.controller.bulkEdit.1",
+        location: "admin.seat.controller.bulkEdit.1",
         code: error.code,
         message:
           error.message || "Some error occurred while 'updating' the seats.",
@@ -238,7 +238,7 @@ exports.bulkDelete = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "seat.controller.bulkDelete.1",
+        location: "admin.seat.controller.bulkDelete.1",
         code: error.code,
         message: error.message || "Some error occurred while bulk deleting the seats",
         from: "sequelize",

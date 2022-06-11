@@ -22,7 +22,7 @@ exports.list = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "profile.controller.list.1",
+        location: "admin.profile.controller.list.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the profiles",
@@ -62,7 +62,7 @@ exports.find = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "profile.controller.find.1",
+        location: "admin.profile.controller.find.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the profiles",
@@ -128,7 +128,7 @@ exports.create = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "profile.controller.create.1",
+        location: "admin.profile.controller.create.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the profile.",
@@ -171,7 +171,7 @@ exports.delete = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "profile.controller.delete.1",
+        location: "admin.profile.controller.delete.1",
         code: error.code,
         message:
           error.message || "Some error occurred while deleting the profile",

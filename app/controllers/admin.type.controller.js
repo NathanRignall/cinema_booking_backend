@@ -22,7 +22,7 @@ exports.list = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "type.controller.list.1",
+        location: "admin.type.controller.list.1",
         code: error.code,
         message: error.message || "Some error occurred while finding the types",
         from: "sequelize",
@@ -61,7 +61,7 @@ exports.find = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "type.controller.find.1",
+        location: "admin.type.controller.find.1",
         code: error.code,
         message: error.message || "Some error occurred while finding the types",
         from: "sequelize",
@@ -137,7 +137,7 @@ exports.create = function (req, res, next) {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "type.controller.create.1",
+        location: "admin.type.controller.create.1",
         code: error.code,
         message:
           error.message || "Some error occurred while creating the type.",
@@ -180,7 +180,7 @@ exports.delete = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "type.controller.delete.1",
+        location: "admin.type.controller.delete.1",
         code: error.code,
         message: error.message || "Some error occurred while deleting the type",
         from: "sequelize",

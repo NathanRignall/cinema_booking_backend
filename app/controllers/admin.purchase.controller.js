@@ -21,7 +21,7 @@ exports.list = (req, res) => {
     .catch((error) => {
       // push the error to buffer
       res.locals.errors.push({
-        location: "purchase.controller.list.1",
+        location: "admin.purchase.controller.list.1",
         code: error.code,
         message:
           error.message || "Some error occurred while finding the purchases",
@@ -123,7 +123,7 @@ exports.create = async function (req, res, next) {
           t.rollback().then(() => {
             // push the error to buffer
             res.locals.errors.push({
-              location: "purchase.controller.create.1",
+              location: "admin.purchase.controller.create.1",
               code: error.code,
               message:
                 error.message ||
@@ -153,7 +153,7 @@ exports.create = async function (req, res, next) {
       t.rollback().then(() => {
         // push the error to buffer
         res.locals.errors.push({
-          location: "purchase.controller.create.2",
+          location: "admin.purchase.controller.create.2",
           code: error.code,
           message:
             error.message || "Some error occurred while creating the purchase",
