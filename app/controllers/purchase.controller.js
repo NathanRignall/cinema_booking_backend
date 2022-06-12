@@ -235,7 +235,7 @@ exports.create = async function (req, res, next) {
                           price_data: {
                             currency: 'gbp',
                             product_data: {
-                              name: `Title ${seat.name} ${seat.type} ${seat.profile}`,
+                              name: `Seat ${seat.name} ${seat.type} ${seat.profile}`,
                             },
                             unit_amount: seat.price
                           },
@@ -243,6 +243,7 @@ exports.create = async function (req, res, next) {
                         }
                       }),
                       mode: 'payment',
+                      customer_email: req.session.user.email,
                       success_url: `${YOUR_DOMAIN}/book/${screeningId}`,
                       cancel_url: `${YOUR_DOMAIN}/book/${screeningId}`,
 
