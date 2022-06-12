@@ -13,5 +13,8 @@ router.get("/", auth.employee(), purchase.list);
 // create a purchase
 router.post("/", auth.employee(), purchase.create);
 
+// force a purchase
+router.post("/force", auth.employee(), purchase.force);
+
 // export the router
 module.exports = router;

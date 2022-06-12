@@ -3,6 +3,7 @@ const express = require("express");
 const session = require("express-session");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
+const bodyParser = require("body-parser");
 
 // import custom packages
 const cors = require("cors");
@@ -32,6 +33,9 @@ const adminScreeningRouter = require("./app/routes/admin.screening.route");
 const adminSeatRouter = require("./app/routes/admin.seat.route");
 const adminTypeRouter = require("./app/routes/admin.type.route");
 
+// import the hook routes
+const hookStripeRouter = require("./app/routes/hook.stripe.route");
+
 // setup cors middleware
 const corsOptions = {
   origin: function (origin, callback) {
@@ -50,7 +54,6 @@ app.use(function (req, res, next) {
 
 // setup standard middleware
 app.use(logger("dev"));
-app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -69,20 +72,23 @@ app.use(
 );
 
 // use the user routes
-app.use("/session", sessionRouter);
-app.use("/movie", movieRouter);
-app.use("/profile", profileRouter);
-app.use("/purchase", purchaseRouter);
-app.use("/screening", screeningRouter);
+app.use("/session", express.json(), sessionRouter);
+app.use("/movie", express.json(), movieRouter);
+app.use("/profile", express.json(), profileRouter);
+app.use("/purchase", express.json(), purchaseRouter);
+app.use("/screening", express.json(), screeningRouter);
 
 // use the admin routes
-app.use("/admin/session", adminSessionRouter);
-app.use("/admin/movie", adminMovieRouter);
-app.use("/admin/profile", adminProfileRouter);
-app.use("/admin/purchase", adminPurchaseRouter);
-app.use("/admin/screen", adminScreenRouter);
-app.use("/admin/screening", adminScreeningRouter);
-app.use("/admin/seat", adminSeatRouter);
-app.use("/admin/type", adminTypeRouter);
+app.use("/admin/session", express.json(), adminSessionRouter);
+app.use("/admin/movie", express.json(), adminMovieRouter);
+app.use("/admin/profile", express.json(), adminProfileRouter);
+app.use("/admin/purchase", express.json(), adminPurchaseRouter);
+app.use("/admin/screen", express.json(), adminScreenRouter);
+app.use("/admin/screening", express.json(), adminScreeningRouter);
+app.use("/admin/seat", express.json(), adminSeatRouter);
+app.use("/admin/type", express.json(), adminTypeRouter);
+
+// use hook routes
+app.use("/hook/stripe", bodyParser.raw({ type: "*/*" }), hookStripeRouter);
 
 module.exports = app;

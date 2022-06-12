@@ -12,7 +12,45 @@ const Seat = db.seats;
 const Type = db.types;
 const Profile = db.profiles;
 
-const YOUR_DOMAIN = 'http://localhost:3000'
+const YOUR_DOMAIN = 'https://cinema.nathanrignall.uk'
+
+// get all movies from the database.
+exports.list = (req, res) => {
+  const userId = req.session.user.id;
+
+  Purchase.findAll({
+    include: [{
+      model: Reservation,
+      as: "reservations",
+    }], where: { userId: userId }
+  })
+    .then((data) => {
+      // retun the correct vars
+      res.status(200).json({
+        payload: data,
+        message: "okay",
+        reqid: res.locals.reqid,
+      });
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "purchase.controller.list.1",
+        code: error.code,
+        message:
+          error.message || "Some error occurred while finding the purchases",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};
+
 
 // get specific purchase from database
 exports.info = (req, res) => {
@@ -189,6 +227,7 @@ exports.create = async function (req, res, next) {
             id: purchaseId,
             paid: false,
             cost: total,
+            userId: req.session.user.id,
           };
 
           const t = await db.sequelize.transaction();
@@ -201,7 +240,7 @@ exports.create = async function (req, res, next) {
                     id: crypto.randomUUID(),
                     screeningId: screeningId,
                     purchaseId: purchaseId,
-
+                    userId: req.session.user.id,
                     seatId: seat.seatId,
                     profileId: seat.profileId,
                     price: seat.price,
@@ -242,6 +281,7 @@ exports.create = async function (req, res, next) {
                           quantity: 1,
                         }
                       }),
+                      client_reference_id: purchaseId,
                       mode: 'payment',
                       customer_email: req.session.user.email,
                       success_url: `${YOUR_DOMAIN}/book/${screeningId}`,

@@ -33,7 +33,15 @@ db.screens = require("./screen.model.js")(sequelize, Sequelize);
 db.movies = require("./movie.model.js")(sequelize, Sequelize);
 db.screenings = require("./screening.model.js")(sequelize, Sequelize);
 
-// create the realtionship between purchases and profiles (one to many)
+// create the realtionship between users and reservations (one to many)
+db.users.hasMany(db.reservations, { as: "reservations" });
+db.reservations.belongsTo(db.users, { foreignKey: "userId", as: "user" });
+
+// create the realtionship between users and purchases (one to many)
+db.users.hasMany(db.purchases, { as: "purchases" });
+db.purchases.belongsTo(db.users, { foreignKey: "userId", as: "user" });
+
+// create the realtionship between profiles and reservations (one to many)
 db.profiles.hasMany(db.reservations, { as: "reservations" });
 db.reservations.belongsTo(db.profiles, { foreignKey: "profileId", as: "profile" });
 
