@@ -57,11 +57,8 @@ exports.find = (req, res) => {
   // set req parms
   const screen = req.query.screen;
   const movie = req.query.movie;
-
-  const pastDate = new Date(req.query.date);
-  pastDate.setHours(0, 0, 0, 0);
-  const futureDate = new Date(req.query.date);
-  futureDate.setHours(24, 0, 0, 0);
+  const start = new Date(req.query.start);
+  const end = new Date(req.query.end);
 
   var command = {};
 
@@ -84,7 +81,7 @@ exports.find = (req, res) => {
       ],
       where: {
         time: {
-          [db.Sequelize.Op.between]: [pastDate, futureDate],
+          [db.Sequelize.Op.between]: [start, end],
         },
       },
     };
@@ -107,7 +104,7 @@ exports.find = (req, res) => {
       ],
       where: {
         time: {
-          [db.Sequelize.Op.between]: [pastDate, futureDate],
+          [db.Sequelize.Op.between]: [start, end],
         },
       },
     };
@@ -125,7 +122,7 @@ exports.find = (req, res) => {
       ],
       where: {
         time: {
-          [db.Sequelize.Op.between]: [pastDate, futureDate],
+          [db.Sequelize.Op.between]: [start, end],
         },
       },
     };
