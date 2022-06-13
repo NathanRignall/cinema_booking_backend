@@ -41,6 +41,10 @@ db.reservations.belongsTo(db.users, { foreignKey: "userId", as: "user" });
 db.users.hasMany(db.purchases, { as: "purchases" });
 db.purchases.belongsTo(db.users, { foreignKey: "userId", as: "user" });
 
+// create the realtionship between users and screenings (one to many)
+db.screenings.hasMany(db.purchases, { as: "purchases" });
+db.purchases.belongsTo(db.screenings, { foreignKey: "screeningId", as: "screening" });
+
 // create the realtionship between profiles and reservations (one to many)
 db.profiles.hasMany(db.reservations, { as: "reservations" });
 db.reservations.belongsTo(db.profiles, { foreignKey: "profileId", as: "profile" });

@@ -9,12 +9,17 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       defaultValue: 0,
     },
-    name: {
+    seatName: {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: "N/A"
     },
-    type: {
+    typeName: {
+      type: Sequelize.STRING,
+      allowNull: false,
+      defaultValue: "N/A"
+    },
+    profileName: {
       type: Sequelize.STRING,
       allowNull: false,
       defaultValue: "N/A"

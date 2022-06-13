@@ -220,11 +220,11 @@ exports.stats = (req, res) => {
       occupied
         ? [
             db.Sequelize.fn("COUNT", db.Sequelize.col("seats.id")),
-            "occupiedSeats",
+            "count",
           ]
         : [
             db.Sequelize.fn("COUNT", db.Sequelize.col("screen.seats.id")),
-            "totalSeats",
+            "count",
           ],
       [db.Sequelize.fn("DATE", db.Sequelize.col("time")), "date"],
     ],

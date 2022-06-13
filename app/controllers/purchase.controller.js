@@ -9,8 +9,9 @@ const Purchase = db.purchases;
 const Reservation = db.reservations;
 const Screening = db.screenings;
 const Seat = db.seats;
-const Type = db.types;
+const Movie = db.movies;
 const Profile = db.profiles;
+const Screen = db.screens;
 
 const YOUR_DOMAIN = 'https://cinema.nathanrignall.uk'
 
@@ -22,6 +23,16 @@ exports.list = (req, res) => {
     include: [{
       model: Reservation,
       as: "reservations",
+    }, {
+      model: Screening,
+      as: "screening",
+      include: [{
+        model: Movie,
+        as: "movie",
+      },{
+        model: Screen,
+        as: "screen",
+      }]
     }], where: { userId: userId }
   })
     .then((data) => {
@@ -51,67 +62,38 @@ exports.list = (req, res) => {
     });
 };
 
-
 // get specific purchase from database
 exports.info = (req, res) => {
+  const userId = req.session.user.id;
+
   // get req params
   const id = req.params.id;
 
   // Find the specific movie in db
-  Purchase.findByPk(id)
-    .then((purchase_data) => {
-      if (purchase_data) {
-
-        // Find the specific movie in db
-        Screening.findAll({
-          attributes: [],
-          include: [{
-            model: Seat,
-            through: {
-              where: { purchaseId: id },
-            },
-            include: [{
-              model: Type,
-              as: "type",
-            }],
-          }],
-        })
-          .then((seat_data) => {
-            if (seat_data) {
-              // retun the correct vars
-              res.status(200).json({
-                payload: {
-                  seats: seat_data,
-                  purchase: purchase_data,
-                },
-                message: "okay",
-                reqid: res.locals.reqid,
-              });
-            } else {
-              // retun the correct vars
-              res.status(400).json({
-                message: "Purchase not found",
-                reqid: res.locals.reqid,
-              });
-            }
-          })
-          .catch((error) => {
-            // push the error to buffer
-            res.locals.errors.push({
-              location: "purchase.controller.info.1",
-              code: error.code,
-              message: error.message || "Some error occurred while finding the purchase",
-              from: "sequelize",
-            });
-
-            // return the correct vars
-            res.status(500).json({
-              message: "Server error",
-              errors: res.locals.errors,
-              reqid: res.locals.reqid,
-            });
-          });
-
+  Purchase.findByPk(id, {
+    include: [{
+      model: Reservation,
+      as: "reservations",
+    }, {
+      model: Screening,
+      as: "screening",
+      include: [{
+        model: Movie,
+        as: "movie",
+      },{
+        model: Screen,
+        as: "screen",
+      }]
+    }], where: { userId: userId }
+  })
+    .then((data) => {
+      if (data) {
+        // retun the correct vars
+        res.status(200).json({
+          payload: data,
+          message: "okay",
+          reqid: res.locals.reqid,
+        });
       } else {
         // retun the correct vars
         res.status(400).json({
@@ -228,6 +210,8 @@ exports.create = async function (req, res, next) {
             paid: false,
             cost: total,
             userId: req.session.user.id,
+            screeningId: screeningId,
+            online: true,
           };
 
           const t = await db.sequelize.transaction();
@@ -244,9 +228,9 @@ exports.create = async function (req, res, next) {
                     seatId: seat.seatId,
                     profileId: seat.profileId,
                     price: seat.price,
-                    name: seat.name,
-                    type: seat.type,
-                    profile: seat.profile
+                    seatName: seat.name,
+                    typeName: seat.type,
+                    profileName: seat.profile
                   };
 
                   if (reservation.seatId == null | reservation.profileId == null) {

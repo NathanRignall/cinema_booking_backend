@@ -10,7 +10,7 @@ const auth = require("../middleware/auth.middleware");
 // list all purchases
 router.get("/", auth.user(), purchase.list);
 
-// info on purchase
+//info on purchase
 router.get("/:id", auth.user(), purchase.info);
 
 // create purchase

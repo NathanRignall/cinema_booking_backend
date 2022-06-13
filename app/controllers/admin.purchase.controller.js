@@ -84,6 +84,7 @@ exports.force = async function (req, res, next) {
     id: id,
     paid: paid,
     cost: 0,
+    screeningId: screeningId,
   };
 
   const t = await db.sequelize.transaction();
@@ -262,6 +263,7 @@ exports.create = async function (req, res, next) {
             id: purchaseId,
             paid: true,
             cost: total,
+            screeningId: screeningId,
           };
 
           const t = await db.sequelize.transaction();
@@ -278,9 +280,9 @@ exports.create = async function (req, res, next) {
                     seatId: seat.seatId,
                     profileId: seat.profileId,
                     price: seat.price,
-                    name: seat.name,
-                    type: seat.type,
-                    profile: seat.profile
+                    seatName: seat.name,
+                    typeName: seat.type,
+                    profileName: seat.profile
                   };
 
                   if (reservation.seatId == null | reservation.profileId == null) {

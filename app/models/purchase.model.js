@@ -11,7 +11,17 @@ module.exports = (sequelize, Sequelize) => {
     cost: {
       type: Sequelize.INTEGER(8),
       allowNull: false,
-    }
+    },
+    online: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
+    entered: {
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   });
 
   return Purchase;
