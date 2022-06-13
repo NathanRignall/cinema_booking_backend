@@ -9,6 +9,66 @@ const Screening = db.screenings;
 const Seat = db.seats;
 const Type = db.types;
 const Profile = db.profiles;
+const Screen = db.screens;
+const Movie = db.movies;
+
+// get specific purchase from database
+exports.info = (req, res) => {
+
+  // get req params
+  const id = req.params.id;
+
+  // Find the specific movie in db
+  Purchase.findByPk(id, {
+    include: [{
+      model: Reservation,
+      as: "reservations",
+    }, {
+      model: Screening,
+      as: "screening",
+      include: [{
+        model: Movie,
+        as: "movie",
+      }, {
+        model: Screen,
+        as: "screen",
+      }]
+    }]
+  })
+    .then((data) => {
+      if (data) {
+        // retun the correct vars
+        res.status(200).json({
+          payload: data,
+          message: "okay",
+          reqid: res.locals.reqid,
+        });
+      } else {
+        // retun the correct vars
+        res.status(400).json({
+          message: "Purchase not found",
+          reqid: res.locals.reqid,
+        });
+      }
+    })
+    .catch((error) => {
+      // push the error to buffer
+      res.locals.errors.push({
+        location: "purchase.controller.info.1",
+        code: error.code,
+        message: error.message || "Some error occurred while finding the purchase",
+        from: "sequelize",
+      });
+
+      // return the correct vars
+      res.status(500).json({
+        message: "Server error",
+        errors: res.locals.errors,
+        reqid: res.locals.reqid,
+      });
+    });
+};
+
 
 // get all purchases from the database.
 exports.list = (req, res) => {
@@ -67,7 +127,7 @@ exports.force = async function (req, res, next) {
       reqid: res.locals.reqid,
     });
   }
-  
+
   // check if screeningId is present
   if (!seats) {
     // retun the correct vars
@@ -304,12 +364,12 @@ exports.create = async function (req, res, next) {
                   // try commit to the db
                   t.commit().then(() => {
 
-                      // return the correct vars
-                      res.status(200).json({
-                        payload: data,
-                        message: "okay",
-                        reqid: res.locals.reqid,
-                      });
+                    // return the correct vars
+                    res.status(200).json({
+                      payload: data,
+                      message: "okay",
+                      reqid: res.locals.reqid,
+                    });
 
                   });
                 })
