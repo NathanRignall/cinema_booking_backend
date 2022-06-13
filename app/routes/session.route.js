@@ -23,7 +23,7 @@ router.put("/", auth.user(), session.update); // view
 router.put("/password", auth.user(), session.password);
 
 // logout sesison
-router.put("/logout", auth.user(), session.logout);
+router.get("/logout", auth.user(), session.logout);
 
 // export the router
 module.exports = router;
