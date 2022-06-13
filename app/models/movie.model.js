@@ -15,7 +15,12 @@ module.exports = (sequelize, Sequelize) => {
       duration: {
         type: Sequelize.INTEGER(3),
         allowNull: false,
-      }
+      },
+      image: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        defaultValue: "default"
+      },
     });
   
     return Movie;
