@@ -268,7 +268,7 @@ exports.create = async function (req, res, next) {
                       client_reference_id: purchaseId,
                       mode: 'payment',
                       customer_email: req.session.user.email,
-                      success_url: `${YOUR_DOMAIN}/book/${screeningId}`,
+                      success_url: `${YOUR_DOMAIN}/account`,
                       cancel_url: `${YOUR_DOMAIN}/book/${screeningId}`,
 
                     }).then(session => {
